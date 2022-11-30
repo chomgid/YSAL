@@ -1,0 +1,129 @@
+---
+title: "Pro 2"
+author: '2017122058'
+date: "11/28/2022"
+output: html_document
+---
+```{r}
+rm(list= ls())
+```
+
+```{r}
+  install.packages('tidyverse')
+```
+```{r}
+library( tidyverse )
+```
+```{r}
+setwd('/Users/shinsangmin/Downloads')
+pre_data <- read_csv(file='predata.csv')
+```
+```{r}
+pre_data <- data.frame(pre_data)
+```
+
+```{r}
+pre_data <- select(pre_data, !contains( c ('Stance')  ))
+```
+
+```{r}
+
+fight_finder <- function(name){
+  R <- filter(pre_data, R_fighter == name)
+  B <- filter(pre_data, B_fighter == name)
+  
+  R <- select(R, starts_with('R_'))
+  B <- select(B,starts_with('B_'))
+  
+  coln <- gsub('R_','',colnames(R))
+  coln <- gsub('avg_','',coln)
+  
+  
+  names(R)=coln
+  names(B)=coln
+  
+  data <- rbind(R, B)
+  data <- na.omit(data) 
+  
+  ab <- apply(data[,-1],2,mean)
+  ab <- matrix(ab, nrow = 1)
+  ab <- cbind( name, ab )
+  colnames(ab) <- coln
+  ab <- data.frame(ab)
+  ab <- select(ab, !contains( c ('total_title_bouts', 'current_win_streak','current_lose_streak','ongest_win_streak', 'wins', 'losses', 'draw', 'win_by_Decision_Majority', 'win_by_Decision_Split',
+                                 'win_by_Decision_Unanimous', 'Weight_lbs', 'age')  ))
+  return(ab)
+}
+```
+
+```{r}
+fight_finder('Chan Sung Jung')
+```
+
+```{r}
+fighter_name <-  c(unique(unique(pre_data[,1]), unique(pre_data[,2]) ) )
+```
+
+```{r}
+length(fighter_name)
+```
+```{r}
+tot_df <- data.frame()
+```
+
+```{r}
+for( i in 1:length(fighter_name)){
+  tot_df <- rbind(tot_df, fight_finder(fighter_name[i]))
+}
+```
+
+```{r}
+seoul_fight_name <-c('Chan Sung Jung',
+                     'Giga Chikadze',
+                     'Dooho Choi',
+                     'Kyle Nelson',
+                     'Da-Un Jung', 
+                     'Devin Clark')
+```
+
+
+```{r}
+df <- data.frame()
+for (i in 1:length(seoul_fight_name)){
+  df <- rbind(df,fight_finder(seoul_fight_name[i]) )
+  
+}
+```
+
+```{r}
+
+df2 <- df[,-1]
+rownames(df2) <- df[,1]
+df2
+```
+
+```{r}
+
+```
+
+```{r}
+physique <- function(name){
+ df2[]
+  
+}
+```
+
+```{r}
+
+
+
+
+
+
+
+
+
+
+```
+
+
